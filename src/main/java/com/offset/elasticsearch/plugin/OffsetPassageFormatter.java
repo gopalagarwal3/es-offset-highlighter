@@ -21,6 +21,7 @@ package com.offset.elasticsearch.plugin;
 
 import org.apache.lucene.search.uhighlight.Passage;
 import org.apache.lucene.search.uhighlight.PassageFormatter;
+import org.apache.lucene.search.uhighlight.Snippet;
 
 /**
  * Creates a formatted snippet from the top passages.
@@ -65,14 +66,15 @@ public class OffsetPassageFormatter extends PassageFormatter {
 	}
 
 	@Override
-	public String format(Passage passages[], String content) {
-		StringBuilder sb = new StringBuilder();
+	public Snippet[] format(Passage passages[], String content) {
+		
+		Snippet[] snippets = new Snippet[passages.length];
+		int j = 0;
 		int pos = 0;
+		
 		for (Passage passage : passages) {
 			// don't add ellipsis if its the first one, or if its connected.
-			if (passage.getStartOffset() > pos && pos > 0) {
-				sb.append(ellipsis);
-			}
+			StringBuilder sb = new StringBuilder();
 			pos = passage.getStartOffset();
 			sb.append("<startoffset=" + Integer.toString(passage.getStartOffset()) + ">");
 			sb.append("<endoffset=" + Integer.toString(passage.getEndOffset()) + ">");
@@ -100,8 +102,10 @@ public class OffsetPassageFormatter extends PassageFormatter {
 			// its possible a "term" from the analyzer could span a sentence boundary.
 			append(sb, content, pos, Math.max(pos, passage.getEndOffset()));
 			pos = passage.getEndOffset();
+			
+			snippets[j++] = new Snippet(sb.toString().trim(), passage.getScore(), passage.getNumMatches() > 0);
 		}
-		return sb.toString();
+		return snippets;
 	}
 
 	/**

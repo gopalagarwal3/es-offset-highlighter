@@ -14,7 +14,7 @@ import java.util.List;
 
 public class OffsetHighlighter extends UnifiedHighlighter {
 
-    public static final String NAME = "annotated";
+    public static final String NAME = "offset";
 
     @Override
     protected PassageFormatter getPassageFormatter(HitContext hitContext,SearchContextHighlight.Field field, Encoder encoder) {
