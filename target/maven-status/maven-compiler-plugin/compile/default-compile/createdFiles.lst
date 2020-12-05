@@ -1,2 +1,3 @@
+com\offset\elasticsearch\plugin\OffsetPassageFormatter.class
 com\offset\elasticsearch\plugin\OffsetHighlighterPlugin.class
-com\offset\elasticsearch\plugin\HelloWorldRestAction.class
+com\offset\elasticsearch\plugin\OffsetHighlighter.class
