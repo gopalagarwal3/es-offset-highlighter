@@ -1,0 +1,6 @@
+description=${project.description}
+version=0.0.1-SNAPSHOT
+name=offset-highlighter
+classname=com.offset.elasticsearch.plugin.OffsetHighlighterPlugin
+java.version=1.8
+elasticsearch.version=7.6.2
