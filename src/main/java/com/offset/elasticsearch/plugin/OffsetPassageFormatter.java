@@ -76,8 +76,8 @@ public class OffsetPassageFormatter extends PassageFormatter {
 			// don't add ellipsis if its the first one, or if its connected.
 			StringBuilder sb = new StringBuilder();
 			pos = passage.getStartOffset();
-			sb.append("<startoffset=" + Integer.toString(passage.getStartOffset()) + ">");
-			sb.append("<endoffset=" + Integer.toString(passage.getEndOffset()) + ">");
+			sb.append("<offset start=\"" + Integer.toString(passage.getStartOffset()) + "\" ");
+			sb.append("end=\"" + Integer.toString(passage.getEndOffset()) + "\">");
 			for (int i = 0; i < passage.getNumMatches(); i++) {
 				int start = passage.getMatchStarts()[i];
 				assert start >= pos && start < passage.getEndOffset();
@@ -93,6 +93,8 @@ public class OffsetPassageFormatter extends PassageFormatter {
 				}
 				end = Math.min(end, passage.getEndOffset()); // in case match straddles past passage
 
+				sb.append("<keyword start=\"" + Integer.toString(start) + "\" ");
+				sb.append("end=\"" + Integer.toString(end) + "\"" + "/>");
 				sb.append(preTag);
 				append(sb, content, start, end);
 				sb.append(postTag);
@@ -101,6 +103,7 @@ public class OffsetPassageFormatter extends PassageFormatter {
 			}
 			// its possible a "term" from the analyzer could span a sentence boundary.
 			append(sb, content, pos, Math.max(pos, passage.getEndOffset()));
+			sb.append("</offset>");
 			pos = passage.getEndOffset();
 			
 			snippets[j++] = new Snippet(sb.toString().trim(), passage.getScore(), passage.getNumMatches() > 0);
